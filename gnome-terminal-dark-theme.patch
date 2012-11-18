@@ -1,0 +1,23 @@
+diff -aurN gnome-terminal-3.4.1.1.orig/src/terminal.c gnome-terminal-3.4.1.1/src/terminal.c
+--- gnome-terminal-3.4.1.1.orig/src/terminal.c	2012-07-02 20:59:38.757535736 +0200
++++ gnome-terminal-3.4.1.1/src/terminal.c	2012-07-02 21:03:47.568425169 +0200
+@@ -495,6 +495,7 @@
+   int argc_copy;
+   const char *startup_id, *display_name, *home_dir;
+   GdkDisplay *display;
++  GtkSettings *settings;
+   TerminalOptions *options;
+   GError *error = NULL;
+   char *working_directory;
+@@ -553,6 +554,11 @@
+   }
+ 
+   g_set_application_name (_("Terminal"));
++
++  settings = gtk_settings_get_default ();
++  g_object_set (G_OBJECT (settings),
++                "gtk-application-prefer-dark-theme", TRUE,
++                NULL);
+   
+   /* Unset the these env variables, so they doesn't end up
+    * in the factory's env and thus in the terminals' envs.
