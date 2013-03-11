@@ -1,11 +1,11 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
-Version:	3.6.1
+Version:	3.7.91
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.6/%{name}-%{version}.tar.xz
-# Source0-md5:	fc12453283199c2889fe1173cbd82a9b
+Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.7/%{name}-%{version}.tar.xz
+# Source0-md5:	890499ac76e963faa7b119a89de4d46c
 Patch0:		%{name}-dark-theme.patch
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
@@ -17,18 +17,18 @@ BuildRequires:	libtool
 BuildRequires:	pkg-config
 BuildRequires:	startup-notification-devel
 BuildRequires:	vte-devel
-Requires(post,preun):	GConf
-Requires(post,postun):	rarian
+Requires(post,postun):	glib-gio-gsettings
 Requires:	gsettings-desktop-schemas
 Requires:	terminfo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_libexecdir	%{_libdir}/gnome-terminal
 
 %description
 This is a terminal thing that isn't finished at all.
 
 %prep
 %setup -q
-%patch0 -p1
 
 # kill gnome common deps
 sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
@@ -45,8 +45,8 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 %{__autoconf}
 %{__automake}
 %configure \
-	--disable-schemas-install	\
-	--disable-scrollkeeper		\
+	--disable-migration		\
+	--disable-schemas-compile	\
 	--disable-silent-rules
 %{__make}
 
@@ -65,20 +65,18 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%gconf_schema_install gnome-terminal.schemas
-%scrollkeeper_update_post
-
-%preun
-%gconf_schema_uninstall gnome-terminal.schemas
+%update_gsettings_cache
 
 %postun
-%scrollkeeper_update_postun
+%update_gsettings_cache
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_bindir}/*
-%{_datadir}/%{name}
-%{_desktopdir}/*
-%{_sysconfdir}/gconf/schemas/gnome-terminal.schemas
+%doc AUTHORS ChangeLog NEWS
+%attr(755,root,root) %{_bindir}/gnome-terminal
+%dir %{_libexecdir}
+%attr(755,root,root) %{_libexecdir}/gnome-terminal-server
+%{_datadir}/dbus-1/services/org.gnome.Terminal.service
+%{_datadir}/glib-2.0/schemas/org.gnome.Terminal.gschema.xml
+%{_desktopdir}/gnome-terminal.desktop
 
