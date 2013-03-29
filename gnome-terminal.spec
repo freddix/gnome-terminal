@@ -1,12 +1,11 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
-Version:	3.7.91
+Version:	3.8.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.7/%{name}-%{version}.tar.xz
-# Source0-md5:	890499ac76e963faa7b119a89de4d46c
-Patch0:		%{name}-dark-theme.patch
+Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.8/%{name}-%{version}.tar.xz
+# Source0-md5:	0c2729b204f23e4a074135c4fa43532c
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -56,8 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 
-rm -rf $RPM_BUILD_ROOT%{_datadir}/application-registry
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 
 %find_lang %{name} --with-gnome --with-omf
 
