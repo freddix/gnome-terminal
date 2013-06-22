@@ -1,11 +1,11 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
-Version:	3.8.2
+Version:	3.8.3
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.8/%{name}-%{version}.tar.xz
-# Source0-md5:	90b983f50587f3fbc0de24c99ebe24cc
+# Source0-md5:	0f29fd0831ba142b11f9a9ec19533feb
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -15,7 +15,7 @@ BuildRequires:	intltool
 BuildRequires:	libtool
 BuildRequires:	pkg-config
 BuildRequires:	startup-notification-devel
-BuildRequires:	vte-devel
+BuildRequires:	vte-devel >= 0.34.6
 Requires(post,postun):	glib-gio-gsettings
 Requires:	gsettings-desktop-schemas
 Requires:	terminfo
