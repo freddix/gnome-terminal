@@ -1,23 +1,23 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
-Version:	3.8.4
+Version:	3.10.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.8/%{name}-%{version}.tar.xz
-# Source0-md5:	43fb1f084bc9c11c6d4a6158b246bede
+Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.10/%{name}-%{version}.tar.xz
+# Source0-md5:	5db57ba8002bb26ba92372ea25c171fd
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	gsettings-desktop-schemas-devel
-BuildRequires:	gtk+3-devel
+BuildRequires:	gsettings-desktop-schemas-devel >= 3.10.0
+BuildRequires:	gtk+3-devel >= 3.10.0
 BuildRequires:	intltool
 BuildRequires:	libtool
 BuildRequires:	pkg-config
 BuildRequires:	startup-notification-devel
-BuildRequires:	vte-devel >= 0.34.6
+BuildRequires:	vte-devel >= 0.34.8
 Requires(post,postun):	glib-gio-gsettings
-Requires:	gsettings-desktop-schemas
+Requires:	gsettings-desktop-schemas >= 3.10.0
 Requires:	terminfo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -30,7 +30,7 @@ This is a terminal thing that isn't finished at all.
 %setup -q
 
 # kill gnome common deps
-sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
+%{__sed} -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
     -i -e 's/GNOME_MAINTAINER_MODE_DEFINES//g'	\
     -i -e 's/GNOME_COMMON_INIT//g'		\
     -i -e 's/GNOME_CXX_WARNINGS.*//g'		\
