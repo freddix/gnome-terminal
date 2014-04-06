@@ -1,23 +1,25 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
-Version:	3.10.2
+Version:	3.12.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.10/%{name}-%{version}.tar.xz
-# Source0-md5:	746417ef4b6252ed3deb8388d8a1a02a
+Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.12/%{name}-%{version}.tar.xz
+# Source0-md5:	0db5151745f681af5392f18e307a6dc3
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	gsettings-desktop-schemas-devel >= 3.10.0
-BuildRequires:	gtk+3-devel >= 3.10.0
+BuildRequires:	gnome-shell-devel
+BuildRequires:	gsettings-desktop-schemas-devel >= 3.12.0
+BuildRequires:	gtk+3-devel >= 3.12.0
 BuildRequires:	intltool
 BuildRequires:	libtool
+BuildRequires:	nautilus-devel
 BuildRequires:	pkg-config
 BuildRequires:	startup-notification-devel
-BuildRequires:	vte-devel >= 0.34.8
+BuildRequires:	vte-devel >= 0.36.0
 Requires(post,postun):	glib-gio-gsettings
-Requires:	gsettings-desktop-schemas >= 3.10.0
+Requires:	gsettings-desktop-schemas >= 3.12.0
 Requires:	terminfo
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -25,6 +27,24 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 This is a terminal thing that isn't finished at all.
+
+%package shell-search-provider
+Summary:	GNOME Shell search provider
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Requires:	gnome-shell
+
+%description shell-search-provider
+Search result provider for GNOME Shell.
+
+%package -n nautilus-extension-terminal
+Summary:	GNOME Terminal extension for Nautilus
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Requires:	nautilus
+
+%description -n nautilus-extension-terminal
+GNOME Terminal extension for Nautilus.
 
 %prep
 %setup -q
@@ -34,11 +54,11 @@ This is a terminal thing that isn't finished at all.
     -i -e 's/GNOME_MAINTAINER_MODE_DEFINES//g'	\
     -i -e 's/GNOME_COMMON_INIT//g'		\
     -i -e 's/GNOME_CXX_WARNINGS.*//g'		\
-    -i -e 's/GNOME_DEBUG_CHECK//g' configure.ac
+    -i -e 's/GNOME_DEBUG_CHECK//g'		\
+    -i -e 's/AC_MSG_ERROR(\[appdata-validate/AC_MSG_WARN(\[appdata-validate/' configure.ac
 
 %build
 %{__intltoolize}
-%{__gnome_doc_prepare}
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -46,8 +66,10 @@ This is a terminal thing that isn't finished at all.
 %configure \
 	--disable-migration		\
 	--disable-schemas-compile	\
-	--disable-silent-rules
-%{__make}
+	--disable-silent-rules		\
+	--disable-static
+%{__make} \
+        APPDATA_VALIDATE=%{_bindir}/true
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -56,8 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0/*.la
 
-%find_lang %{name} --with-gnome --with-omf
+%find_lang %{name} --with-gnome
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -77,4 +100,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/services/org.gnome.Terminal.service
 %{_datadir}/glib-2.0/schemas/org.gnome.Terminal.gschema.xml
 %{_desktopdir}/gnome-terminal.desktop
+
+%files shell-search-provider
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/nautilus/extensions-3.0/libterminal-nautilus.so
+
+%files -n nautilus-extension-terminal
+%defattr(644,root,root,755)
+%{_datadir}/gnome-shell/search-providers/gnome-terminal-search-provider.ini
 
