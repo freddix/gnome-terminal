@@ -1,11 +1,11 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
-Version:	3.12.0
+Version:	3.12.1
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.12/%{name}-%{version}.tar.xz
-# Source0-md5:	0db5151745f681af5392f18e307a6dc3
+# Source0-md5:	ea25923b736d451504635668eb850895
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -17,10 +17,11 @@ BuildRequires:	libtool
 BuildRequires:	nautilus-devel
 BuildRequires:	pkg-config
 BuildRequires:	startup-notification-devel
-BuildRequires:	vte-devel >= 0.36.0
+BuildRequires:	vte-devel >= 0.36.1
 Requires(post,postun):	glib-gio-gsettings
 Requires:	gsettings-desktop-schemas >= 3.12.0
 Requires:	terminfo
+Requires:	vte >= 0.36.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_libexecdir	%{_libdir}/gnome-terminal
