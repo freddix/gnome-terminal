@@ -1,27 +1,28 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
-Version:	3.12.1
+Version:	3.14.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.12/%{name}-%{version}.tar.xz
-# Source0-md5:	ea25923b736d451504635668eb850895
+Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.14/%{name}-%{version}.tar.xz
+# Source0-md5:	fbe2d5408786ab7becd956549eb7d673
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	dconf-devel
 BuildRequires:	gnome-shell-devel
-BuildRequires:	gsettings-desktop-schemas-devel >= 3.12.0
-BuildRequires:	gtk+3-devel >= 3.12.0
+BuildRequires:	gsettings-desktop-schemas-devel >= 3.14.0
+BuildRequires:	gtk+3-devel >= 3.14.0
 BuildRequires:	intltool
 BuildRequires:	libtool
 BuildRequires:	nautilus-devel
 BuildRequires:	pkg-config
 BuildRequires:	startup-notification-devel
-BuildRequires:	vte-devel >= 0.36.1
+BuildRequires:	vte-devel >= 0.38.0
 Requires(post,postun):	glib-gio-gsettings
-Requires:	gsettings-desktop-schemas >= 3.12.0
+Requires:	gsettings-desktop-schemas >= 3.14.0
 Requires:	terminfo
-Requires:	vte >= 0.36.1
+Requires:	vte >= 0.38.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_libexecdir	%{_libdir}/gnome-terminal
@@ -78,7 +79,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 
-%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0/*.la
 
 %find_lang %{name} --with-gnome
